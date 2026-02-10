@@ -344,3 +344,47 @@ function Thread({ messages, sendMessage }) {
   // ...
 }
 ```
+
+---
+
+## 🚫 Common Errors & Solutions (Debugging Log)
+
+Documenting errors encountered during development to avoid repeating them.
+
+### 1. **Component Name Shadowing**
+
+- **Error**: `'AddTodo' is defined but never used`
+- **Cause**: Defining a local function with the same name as an imported component (e.g., `const AddTodo = ...` inside a component that imports `import { AddTodo } ...`).
+- **Fix**: Rename the local function to camelCase (`addTodo`) to distinguish it from the PascalCase component.
+
+### 2. **State Mutability & undefined Access**
+
+- **Error**: `Uncaught TypeError: can't access property "sno", todos[...] is undefined`
+- **Cause**: Trying to access `todos[todos.length - 1]` when the `todos` array is empty.
+- **Fix**: Always check if the array is empty before accessing elements by index.
+  ```javascript
+  let sno;
+  if (todos.length === 0) {
+    sno = 0;
+  } else {
+    sno = todos[todos.length - 1].sno + 1;
+  }
+  ```
+
+### 3. **Hooks Rules (Invalid Hook Call)**
+
+- **Error**: `React Hook "useEffect" is called in function "addTodo"...`
+- **Cause**: Calling `useEffect` (or any hook) inside a nested function, regular JavaScript function, or condition. Hooks **must** be called at the top level of a React functional component.
+- **Fix**: Move the `useEffect` call to the main body of the component.
+
+### 4. **State Initialization (Nested Arrays)**
+
+- **Error**: `todos.map is not a function` or Key Prop warnings.
+- **Cause**: Initializing state with `useState([initTodos])` when `initTodos` is _already_ an array. This creates a nested array `[[...]]`.
+- **Fix**: Use `useState(initTodos)` directly.
+
+### 5. **Unique Key Prop Warning**
+
+- **Error**: `Each child in a list should have a unique "key" prop.`
+- **Cause**: Rendering a list of items (via `.map()`) without providing a unique `key` prop to the outermost element returned by the map callback.
+- **Fix**: Add `key={uniqueId}` to the element.
