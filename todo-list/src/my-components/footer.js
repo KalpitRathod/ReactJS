@@ -1,7 +1,10 @@
 import React from 'react'
+import './footer.css'
 
 export const Footer = () => {
   return (
-    <div>footer</div>
+    <footer className='bg-dark text-light'>
+        <p className='text-center'>Copyright &copy; My Todos List</p>
+    </footer>
   )
 }
